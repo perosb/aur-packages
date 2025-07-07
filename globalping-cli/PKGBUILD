@@ -8,7 +8,7 @@ url="https://github.com/jsdelivr/globalping-cli"
 license=('Mozilla Public License 2.0')
 makedepends=('git' 'go')
 source=("$pkgname::git+https://github.com/jsdelivr/$pkgname.git#tag=v$pkgver")
-sha256sums=(SKIP)
+sha256sums=('f3c756d8e414a7d30538f38db5a5d74f61b90fa4688b4fd24523fafc259a5c14')
 
 build() {
 	cd "$pkgname"

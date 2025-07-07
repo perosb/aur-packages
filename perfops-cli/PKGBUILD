@@ -8,7 +8,7 @@ url="https://perfops.net"
 license=('APACHE')
 makedepends=('git' 'go')
 source=("$pkgname::git+https://github.com/ProspectOne/$pkgname.git#tag=v$pkgver")
-sha256sums=(SKIP)
+sha256sums=('197380ab784474a25ae50a7cf604fddd7d25922be27df2d7f5aec07004595808')
 
 build() {
 	cd "$pkgname"

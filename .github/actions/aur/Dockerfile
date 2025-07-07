@@ -1,5 +1,7 @@
 FROM docker.io/library/archlinux:base-devel AS base
 
+RUN echo "Server = https://mirror.osbeck.com/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
+
 RUN pacman -Syu --needed --noconfirm pacman-contrib namcap git sudo openssh rsync && \
     echo PKGEXT=.pkg.tar >> /etc/makepkg.conf
 

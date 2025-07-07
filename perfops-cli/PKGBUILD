@@ -16,9 +16,8 @@ build() {
         PERFOPS_BUILD_PLATFORMS=linux
         go mod vendor
         go mod tidy
-        go build .
-        #go get -u github.com/ProspectOne/perfops-cli
-}
+        CGO_ENABLED=0 go build -v
+}        
 
 package() {
 	install -Dm755 "$srcdir/perfops-cli/perfops-cli" "$pkgdir/usr/bin/perfops-cli"

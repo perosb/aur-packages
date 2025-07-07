@@ -1,0 +1,42 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '*/PKGBUILD'
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to publish
+        type: string
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Find updated package
+        id: getPackage
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        run: |
+          #!/usr/bin/env bash
+          set -euxo pipefail
+
+          echo "package=$(git diff --name-only HEAD HEAD~1 "*/PKGBUILD" | head -1 | xargs dirname)" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Publish package
+        if: ${{ steps.getPackage.outputs.package != '' || github.event_name == 'workflow_dispatch' }}
+        uses: ./.github/actions/aur
+        with:
+          action: publish
+          pkgname: ${{ steps.getPackage.outputs.package || github.event.inputs.package }}
+          aur_ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          aur_email: ${{ secrets.AUR_EMAIL }}
+          aur_username: ${{ secrets.AUR_USERNAME }}

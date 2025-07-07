@@ -1,0 +1,36 @@
+name: Validate PKGBUILD
+
+on:
+  pull_request:
+    paths:
+      - '*/PKGBUILD'
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - name: Find updated package
+        id: getPackage
+        run: |
+          #!/usr/bin/env bash
+          set -euxo pipefail
+
+          echo "package=$(git diff --name-only HEAD HEAD~1 "*/PKGBUILD" | head -1 | xargs dirname)" | tee -a "$GITHUB_OUTPUT"
+
+
+      - name: Validate package
+        if: ${{ steps.getPackage.outputs.package != '' }}
+        uses: ./.github/actions/aur
+        with:
+          action: validate
+          pkgname: ${{ steps.getPackage.outputs.package }}
+          aur_email: ${{ secrets.AUR_EMAIL }}
+          aur_username: ${{ secrets.AUR_USERNAME }}

@@ -1,0 +1,27 @@
+name: Publish AUR package action
+description: ''
+author: 'cwrau'
+branding:
+  icon: 'package'
+  color: 'blue'
+
+inputs:
+  action:
+    description: What to do, either 'validate' or 'publish'
+    required: true
+  pkgname:
+    description: ''
+    required: true
+  aur_ssh_private_key:
+    description: ''
+    required: true
+  aur_email:
+    description: ''
+    required: true
+  aur_username:
+    description: ''
+    required: true
+
+runs:
+  using: docker
+  image: Dockerfile

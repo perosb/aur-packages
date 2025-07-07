@@ -1,0 +1,46 @@
+name: Update pkgsums in PKGBUILD
+
+on:
+  pull_request:
+    paths:
+      - '*/PKGBUILD'
+    branches:
+      - main
+
+jobs:
+  update-pkgsums:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          token: ${{ secrets.GIT_PAT }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Find updated package
+        id: getPackage
+        run: |
+          #!/usr/bin/env bash
+          set -euxo pipefail
+
+          echo "package=$(git diff --name-only HEAD HEAD~1 "*/PKGBUILD" | head -1 | xargs dirname)" | tee -a "$GITHUB_OUTPUT"
+
+
+      - name: Update pkgsums
+        id: updatePkgsums
+        if: ${{ steps.getPackage.outputs.package != '' }}
+        uses: ./.github/actions/aur
+        with:
+          action: updatePkgsums
+          pkgname: ${{ steps.getPackage.outputs.package }}
+
+      - name: Commit PKGBUILD
+        if: ${{ steps.updatePkgsums.outputs.updated == 'true' }}
+        uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9
+        with:
+          message: "ci: [bot] Update pkgsums"
+          default_author: github_actions
+          push: true
+          add: ${{ steps.getPackage.outputs.package }}/PKGBUILD

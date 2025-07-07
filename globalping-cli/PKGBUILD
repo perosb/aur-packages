@@ -13,7 +13,7 @@ conflicts=("$_pkgname" "${_pkgname}-cli")
 
 build() {
 	cd "$pkgname"
-        go mod tidy
+    go mod tidy
 	CGO_ENABLED=0 go build -v
 	go clean -modcache
 }

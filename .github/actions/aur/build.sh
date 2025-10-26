@@ -83,7 +83,7 @@ fi
 endgroup
 
 group Copying package files
-rsync -Cav --delete ./ /tmp/local-repo/
+rsync -avv --include-from=<(git ls-files) --exclude='*' --filter='P .git' --delete-excluded ./ /tmp/local-repo/
 endgroup
 
 cd /tmp/local-repo
@@ -94,13 +94,15 @@ if [[ "$validate" == true ]] || [[ "$updatePkgsums" == true && "$updatedPkgsums"
   endgroup
 
   group Testing PKGBUILD
-  set +eu
-  source ./PKGBUILD
-  set -eu
-  if [[ -v makedepends && "${#makedepends[@]}" -gt 0 ]]; then
-    paru --sync --needed --asdeps --noconfirm "${makedepends[@]}"
-  fi
-  makepkg -d
+  (
+    set +eu
+    source ./PKGBUILD
+    set -eu
+    if [[ -v makedepends && "${#makedepends[@]}" -gt 0 ]]; then
+      paru --sync --needed --asdeps --noconfirm "${makedepends[@]}"
+    fi
+    makepkg -d
+  )
   endgroup
 fi
 
@@ -110,7 +112,8 @@ endgroup
 
 if [[ "$push" == true ]] && ! git diff-index --quiet HEAD; then
   group Committing changes
-  git commit . -m "chore: sync from github"
+  git add . -f
+  git commit -m "chore: sync from github"
   endgroup
 
   group Pushing changes

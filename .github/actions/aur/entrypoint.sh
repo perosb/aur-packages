@@ -24,4 +24,16 @@ chown -vR builder:builder /home/builder
 chmod -vR 0600 /home/builder/.ssh/*
 endgroup
 
-exec runuser builder --command "$@"
+group Changing ownership of git directory
+oldUID="$(stat -c %u "${GITHUB_WORKSPACE:-.}")"
+oldGID="$(stat -c %g "${GITHUB_WORKSPACE:-.}")"
+chown -vR builder:builder "${GITHUB_WORKSPACE:-.}"
+endgroup
+
+group Running command
+runuser builder --command "$@"
+endgroup
+
+group Changing ownership of git directory back
+chown -vR "$oldUID:$oldGID" "${GITHUB_WORKSPACE:-.}"
+endgroup

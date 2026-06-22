@@ -12,7 +12,7 @@ RUN useradd -m builder && \
   chown builder:builder /home/builder
 USER builder
 RUN env -C /home/builder git clone https://aur.archlinux.org/paru-bin.git && \
-    env -C /home/builder/paru-bin makepkg -s OPTIONS=-debug
+    env -C /home/builder/paru-bin makepkg -s
 
 FROM base
 

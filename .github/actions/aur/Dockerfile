@@ -16,7 +16,8 @@ RUN env -C /home/builder git clone https://aur.archlinux.org/paru-bin.git && \
 
 FROM base
 
-COPY --from=paru /home/builder/paru-bin/paru-*.pkg.tar /tmp/paru.pkg.tar
+# Match only paru-bin-<version>…, not paru-bin-debug-…
+COPY --from=paru /home/builder/paru-bin/paru-bin-[0-9]*.pkg.tar /tmp/paru.pkg.tar
 RUN pacman -U --noconfirm /tmp/paru.pkg.tar && rm -f /tmp/paru.pkg.tar
 COPY entrypoint.sh /entrypoint.sh
 COPY build.sh /build.sh

@@ -9,7 +9,7 @@ license=('MPL-2.0')
 makedepends=('git' 'go')
 source=("$pkgname::git+https://github.com/jsdelivr/$pkgname.git#tag=v$pkgver")
 sha256sums=('cd6a9e077848a09bfa3a3c4b6a2f6fa9a1dff7121c5eeacd86750a9976a7267b')
-conflicts=("$pkgname" "${pkgname}-cli")
+conflicts=("$pkgname" "globalping-bin")
 
 build() {
 	cd "$pkgname"

@@ -23,3 +23,5 @@ package() {
 	install -Dm644 ${pkgname}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 	install -Dm755 "$pkgname/$pkgname" "$pkgdir/usr/bin/globalping"
 }
+
+# CI path-filter nudge for AUR action smoke test

@@ -83,7 +83,9 @@ fi
 endgroup
 
 group Copying package files
-rsync -avv --include-from=<(git ls-files) --exclude='*' --filter='P .git' --delete-excluded ./ /tmp/local-repo/
+# rsync 3.5+ cannot open process-substitution paths like /dev/fd/N for --include-from
+git ls-files > /tmp/rsync-includes
+rsync -avv --include-from=/tmp/rsync-includes --exclude='*' --filter='P .git' --delete-excluded ./ /tmp/local-repo/
 endgroup
 
 cd /tmp/local-repo

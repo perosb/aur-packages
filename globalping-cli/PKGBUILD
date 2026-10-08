@@ -9,7 +9,7 @@ url="https://github.com/jsdelivr/globalping-cli"
 license=('MPL-2.0')
 makedepends=('git' 'go')
 source=("$pkgname::git+https://github.com/jsdelivr/$pkgname.git#tag=v$pkgver")
-sha256sums=('492ade328f0df5bbd02e0ec4fc308c442ac03e0a79cd9b1e9496063c6564ad5c')
+sha256sums=('80adf6b5e2c21527f5d5622d4be6e071668376d8e7f943b24ac39cb5ef2aff48')
 conflicts=("$_pkgname" "$_pkgname-bin")
 
 build() {

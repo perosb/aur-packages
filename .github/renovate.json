@@ -12,19 +12,13 @@
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
     }
-  ],  
+  ],
   "gitIgnoredAuthors": [
     "29139614+renovate[bot]@users.noreply.github.com",
     "41898282+github-actions[bot]@users.noreply.github.com"
   ],
   "semanticCommitScope": "{{parentDir}}/dependencies",
   "additionalBranchPrefix": "{{parentDir}}-",
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    }
-  ],
   "customManagers": [
     {
       "customType": "regex",

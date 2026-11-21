@@ -2,8 +2,6 @@ name: Update pkgsums in PKGBUILD
 
 on:
   pull_request:
-    paths:
-      - '*/PKGBUILD'
     branches:
       - main
 
@@ -25,7 +23,7 @@ jobs:
           #!/usr/bin/env bash
           set -euxo pipefail
 
-          echo "package=$(git diff --name-only HEAD HEAD~1 "*/PKGBUILD" | head -1 | xargs dirname)" | tee -a "$GITHUB_OUTPUT"
+          echo "package=$(git diff --name-only HEAD HEAD~1 "*/PKGBUILD" | head -1 | xargs -r dirname)" | tee -a "$GITHUB_OUTPUT"
 
 
       - name: Update pkgsums
